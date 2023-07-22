@@ -1,0 +1,49 @@
+PathfinderLog
+BOT
+ — Today at 1:31 PM
+Map 'WHC' #3 changed
+
+Jangu Danis #90050248
+Created signature 'jtc-599' #381909
+ groupId: NULL ➜ 0 , typeId: NULL ➜ 0 , name: NULL ➜ 'jtc-599' , description: NULL ➜ ' '
+Image
+Pathfinder API•Today at 1:31 PM
+
+Jangu Danis #90050248
+Created signature 'yrc-920' #381910
+ groupId: NULL ➜ 1 , typeId: NULL ➜ 0 , name: NULL ➜ 'yrc-920' , description: NULL ➜ 'Guristas Hideaway'
+Image
+Pathfinder API•Today at 1:31 PM
+
+Jangu Danis #90050248
+Created signature 'upb-030' #381911
+ groupId: NULL ➜ 1 , typeId: NULL ➜ 0 , name: NULL ➜ 'upb-030' , description: NULL ➜ 'Guristas Refuge'
+Image
+Pathfinder API•Today at 1:31 PM
+
+Jangu Danis #90050248
+Created signature 'npk-564' #381912
+ groupId: NULL ➜ 1 , typeId: NULL ➜ 0 , name: NULL ➜ 'npk-564' , description: NULL ➜ 'Guristas Hideaway'
+Image
+Pathfinder API•Today at 1:31 PM
+Map 'WHC' #3 changed
+
+Luxxianna Seraph #2121139046
+Updated map 'WHC' #3
+ slackChannelHistory: ' ' ➜ '#pathfinder-scanning-scrape'
+Image
+Pathfinder API•Today at 1:32 PM
+Map 'WHC' #3 changed
+
+Jangu Danis #90050248
+Updated signature 'jtc-599' #381909
+ groupId: 0 ➜ 2
+Image
+Pathfinder API•Today at 1:32 PM
+Map 'WHC' #3 changed
+
+Jangu Danis #90050248
+Updated signature 'jtc-599' #381909
+ description: ' ' ➜ 'Crumbling Guristas Solar Harvesters'
+Image
+Pathfinder API•Today at 1:32 PM

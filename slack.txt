@@ -1,0 +1,299 @@
+Pathfinder Scanner Scrape
+APP  1:32 PM
+Map 'WHC' #3 changed
+
+Luxxianna Seraph #2121139046Luxxianna Seraph #2121139046
+Updated map 'WHC' #3
+ slackChannelHistory: ' ' ➜ '#pathfinder-scanning-scrape'
+Pathfinder API | Today at 1:32 PM
+1:32
+Map 'WHC' #3 changed
+
+Jangu Danis #90050248Jangu Danis #90050248
+Updated signature 'jtc-599' #381909
+ groupId: 0 ➜ 2
+Pathfinder API | Today at 1:32 PM
+1:32
+Map 'WHC' #3 changed
+
+Jangu Danis #90050248Jangu Danis #90050248
+Updated signature 'jtc-599' #381909
+ description: ' ' ➜ 'Crumbling Guristas Solar Harvesters'
+Pathfinder API | Today at 1:32 PM
+
+Pathfinder Scanner Scrape
+APP  1:44 PM
+Map 'WHC' #3 changed
+
+Apollo Creed Adama #2117231307Apollo Creed Adama #2117231307
+Created signature 'shw-528' #381913
+ groupId: NULL ➜ 0 , typeId: NULL ➜ 0 , name: NULL ➜ 'shw-528' , description: NULL ➜ ' '
+Pathfinder API | Today at 1:44 PM
+
+Pathfinder Scanner Scrape
+APP  3:06 PM
+Map 'WHC' #3 changed
+
+Apollo Creed Adama #2117231307Apollo Creed Adama #2117231307
+Deleted connection 'wh' #50145
+Pathfinder API | Today at 3:06 PM
+3:08
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Deleted system 'J160739' #3816
+Pathfinder API | Today at 3:08 PM
+3:11
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'ncy-172' #381914
+ groupId: NULL ➜ 5 , typeId: NULL ➜ 0 , name: NULL ➜ 'ncy-172' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:11 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated signature 'shw-528' #381913
+ groupId: 0 ➜ 3 , typeId: 0 ➜ 16
+Pathfinder API | Today at 3:11 PM
+3:11
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated signature 'ncy-172' #381914
+ typeId: 0 ➜ 27
+Pathfinder API | Today at 3:11 PM
+3:12
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated system 'J160111' #2052
+ active: 0 ➜ 1
+Pathfinder API | Today at 3:12 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created connection 'wh' #50224
+ source: NULL ➜ 2052 , target: NULL ➜ 1
+Pathfinder API | Today at 3:12 PM
+3:16
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated system 'J160111' #2052
+ description: NULL ➜ '19 July 23 active pos at planet 6 moon 4: Bank Notes in ISK'
+Pathfinder API | Today at 3:16 PM
+
+Pathfinder Scanner Scrape
+APP  3:21 PM
+Map 'WHC' #3 changed
+
+Vince Rainbow Sun #2119952256Vince Rainbow Sun #2119952256
+Updated connection 'wh' #50224
+ type: '["wh_fresh"]' ➜ '["wh_fresh","wh_jump_mass_l"]'
+Pathfinder API | Today at 3:21 PM
+
+Pathfinder Scanner Scrape
+APP  3:29 PM
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'gds-924' #381915
+ groupId: NULL ➜ 5 , typeId: NULL ➜ 0 , name: NULL ➜ 'gds-924' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'crj-528' #381916
+ groupId: NULL ➜ 5 , typeId: NULL ➜ 0 , name: NULL ➜ 'crj-528' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'auu-816' #381917
+ groupId: NULL ➜ 5 , typeId: NULL ➜ 0 , name: NULL ➜ 'auu-816' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'xeu-038' #381918
+ groupId: NULL ➜ 5 , typeId: NULL ➜ 0 , name: NULL ➜ 'xeu-038' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'ral-190' #381919
+ groupId: NULL ➜ 5 , typeId: NULL ➜ 0 , name: NULL ➜ 'ral-190' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'gfc-664' #381920
+ groupId: NULL ➜ 4 , typeId: NULL ➜ 6 , name: NULL ➜ 'gfc-664' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'btl-477' #381921
+ groupId: NULL ➜ 3 , typeId: NULL ➜ 16 , name: NULL ➜ 'btl-477' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'qwj-648' #381922
+ groupId: NULL ➜ 1 , typeId: NULL ➜ 1 , name: NULL ➜ 'qwj-648' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'kcd-700' #381923
+ groupId: NULL ➜ 1 , typeId: NULL ➜ 1 , name: NULL ➜ 'kcd-700' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'grv-632' #381924
+ groupId: NULL ➜ 1 , typeId: NULL ➜ 1 , name: NULL ➜ 'grv-632' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'lrf-938' #381925
+ groupId: NULL ➜ 1 , typeId: NULL ➜ 1 , name: NULL ➜ 'lrf-938' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'rvg-902' #381926
+ groupId: NULL ➜ 1 , typeId: NULL ➜ 4 , name: NULL ➜ 'rvg-902' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'qzo-386' #381927
+ groupId: NULL ➜ 1 , typeId: NULL ➜ 2 , name: NULL ➜ 'qzo-386' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created signature 'hsz-609' #381928
+ groupId: NULL ➜ 1 , typeId: NULL ➜ 1 , name: NULL ➜ 'hsz-609' , description: NULL ➜ ' '
+Pathfinder API | Today at 3:29 PM
+3:30
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated system 'MZPH-W' #24847
+ active: 0 ➜ 1
+Pathfinder API | Today at 3:30 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created connection 'wh' #50225
+ source: NULL ➜ 24847 , target: NULL ➜ 2052
+Pathfinder API | Today at 3:30 PM
+3:30
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated connection 'wh' #50225
+ type: '["wh_fresh"]' ➜ '["wh_fresh","wh_jump_mass_l"]'
+Pathfinder API | Today at 3:30 PM
+3:31
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated system 'MZPH-W' #24847
+ alias: '5 B1N MZPH-W' ➜ '2 B1N MZPH-W'
+Pathfinder API | Today at 3:31 PM
+3:31
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated system 'J100919' #2891
+ active: 0 ➜ 1
+Pathfinder API | Today at 3:31 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created connection 'wh' #50226
+ source: NULL ➜ 2891 , target: NULL ➜ 2052
+Pathfinder API | Today at 3:31 PM
+3:32
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated system 'J100919' #2891
+ alias: '2 B4 J100919' ➜ '2 B2 J100919'
+Pathfinder API | Today at 3:32 PM
+3:32
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated connection 'wh' #50226
+ type: '["wh_fresh"]' ➜ '["wh_fresh","wh_jump_mass_l"]'
+Pathfinder API | Today at 3:32 PM
+3:32
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated signature 'gds-924' #381915
+ connectionId: NULL ➜ 50224
+Pathfinder API | Today at 3:32 PM
+3:32
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated signature 'crj-528' #381916
+ connectionId: NULL ➜ 50226
+Pathfinder API | Today at 3:32 PM
+3:32
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated signature 'xeu-038' #381918
+ connectionId: NULL ➜ 50225
+Pathfinder API | Today at 3:32 PM
+3:33
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created system 'ZWV-GD' #27515
+ active: NULL ➜ 1
+Pathfinder API | Today at 3:33 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created connection 'wh' #50227
+ source: NULL ➜ 27515 , target: NULL ➜ 2052
+Pathfinder API | Today at 3:33 PM
+3:33
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated system 'ZWV-GD' #27515
+ alias: ' ' ➜ '2 B3N ZWV-GD'
+Pathfinder API | Today at 3:33 PM
+3:34
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated signature 'auu-816' #381917
+ connectionId: NULL ➜ 50227
+Pathfinder API | Today at 3:34 PM
+3:35
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated system 'Frulegur' #453
+ active: 0 ➜ 1
+Pathfinder API | Today at 3:35 PM
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Created connection 'wh' #50228
+ source: NULL ➜ 453 , target: NULL ➜ 2052
+Pathfinder API | Today at 3:35 PM
+New
+3:35
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated connection 'wh' #50227
+ type: '["wh_fresh"]' ➜ '["wh_fresh","wh_jump_mass_l"]'
+Pathfinder API | Today at 3:35 PM
+3:35
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated connection 'wh' #50228
+ type: '["wh_fresh"]' ➜ '["wh_fresh","wh_jump_mass_l"]'
+Pathfinder API | Today at 3:35 PM
+3:36
+Map 'WHC' #3 changed
+
+Chadicus Maximus III #2121155226Chadicus Maximus III #2121155226
+Updated signature 'ral-190' #381919
+ connectionId: NULL ➜ 50228
+Pathfinder API | Today at 3:36 PM

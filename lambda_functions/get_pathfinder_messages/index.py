@@ -145,7 +145,7 @@ def retrieve_and_process_week(client, target_week, full_audit:bool=False):
 
 
 def value_per_sig(total_payout, total_sigs):
-    return int(total_payout)/int(total_sigs)
+    return float(total_payout)/int(total_sigs)
 
 def build_response(start_date, end_date, all_scanners, full_audit):
     audit = {key: value.get_audit(full_audit) for key, value in all_scanners.items()}
@@ -163,12 +163,16 @@ def build_response(start_date, end_date, all_scanners, full_audit):
 
 def build_email_links(all_scanners:list, total_payout:int) -> str:
     
+    is_isk_payout = float(total_payout) > 0
+    payout_type = "million isk" if is_isk_payout else "sites"
+
     if type(all_scanners) is list and type(all_scanners[0]) is Scanner:
         per_sig = value_per_sig(total_payout, sum([scanner.total_sigs for scanner in all_scanners.values()]))
-        return  " <br> ".join([f"{scanner_eve_mail_link(scanner.name)} - {scanner_payout(per_sig, scanner.total_sigs)}" for scanner in all_scanners.values() if scanner.total_sigs > 0])
+        
+        return  " <br> ".join([f"{scanner_eve_mail_link(scanner.name)} - {scanner_payout(per_sig, scanner.total_sigs)} {payout_type}" for scanner in all_scanners.values() if scanner.total_sigs > 0])
     elif type(all_scanners) is dict:
         per_sig = value_per_sig(total_payout, all_scanners[ScannerScrapeKeys.TOTAL_SIGS])
-        return  " <br> ".join([f"{scanner_eve_mail_link(name)} - {scanner_payout(per_sig, total)}" for name, total in all_scanners.items() if total > 0 and name != "TOTAL_SIGS"])
+        return  " <br> ".join([f"{scanner_eve_mail_link(name)} - {scanner_payout(per_sig, total)} {payout_type}" for name, total in all_scanners.items() if total > 0 and name != "TOTAL_SIGS"])
 
 def check_cache(table_name, week):
 

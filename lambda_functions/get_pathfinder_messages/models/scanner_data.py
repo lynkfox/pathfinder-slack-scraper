@@ -103,8 +103,8 @@ def scanner_eve_mail_link(name)-> str:
     return f"<url=showinfo:1377//{eve_id}>{char_name}</url>"
 
 
-def scanner_payout(per_sig:float, scanners_sigs:int) -> int:
+def scanner_payout(per_sig:float, scanners_sigs:int) -> str:
     if per_sig <=0:
         return scanners_sigs
     
-    return int(floor(float(per_sig) * int(scanners_sigs)))
+    return "{:.3f}".format(float(per_sig) * int(scanners_sigs))

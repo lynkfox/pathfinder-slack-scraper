@@ -1,8 +1,7 @@
 import aws_cdk as core
 from aws_cdk import NestedStack
-from aws_cdk import aws_ec2 as ec2
 from aws_cdk import aws_lambda
-from aws_cdk import aws_rds as rds
+from aws_cdk import aws_dynamodb as dynamodb
 from constructs import Construct
 import os
 from pathlib import Path
@@ -16,7 +15,7 @@ root_directory = Path(__file__).parents[1]
 
 class LambdaStack(NestedStack):
     def __init__(
-        self, scope: Construct, construct_id: str, deployment_properties: DeploymentProperties, rds_table: rds.DatabaseProxy, **kwargs
+        self, scope: Construct, construct_id: str, deployment_properties: DeploymentProperties, cache_table: dynamodb.Table, **kwargs
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
@@ -37,10 +36,10 @@ class LambdaStack(NestedStack):
             ResourceNames.GET_WEEK_RESULTS,
             function_name=props.prefix_name(ResourceNames.GET_WEEK_RESULTS),
             code=aws_lambda.Code.from_asset(os.path.join(root_directory, DirectoryLocations.GET_WEEK_RESULTS)),
-            environment=LambdaEnvironmentVariables({ "SLACK_TOKEN": props.SLACK_TOKEN }, ResourceNames.GET_WEEK_RESULTS).as_dict(),
+            environment=LambdaEnvironmentVariables({ "SLACK_TOKEN": props.SLACK_TOKEN, "DYNAMO_CACHE": cache_table.table_name }, ResourceNames.GET_WEEK_RESULTS, log_level="INFO").as_dict(),
             runtime=aws_lambda.Runtime.PYTHON_3_10,
             handler="index.lambda_handler",
-            timeout=core.Duration.seconds(29),
+            timeout=core.Duration.seconds(180),
             layers=[layer],
             memory_size=512,
             security_groups=props.security_groups,
@@ -48,6 +47,7 @@ class LambdaStack(NestedStack):
         )
 
         self.lambda_mapping[ResourceNames.GET_WEEK_RESULTS] = week_results
+        cache_table.grant_read_write_data(week_results)
 
         # add_entry = aws_lambda.Function(
         #     self,

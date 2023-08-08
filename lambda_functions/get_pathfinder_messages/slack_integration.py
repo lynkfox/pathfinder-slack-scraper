@@ -1,14 +1,15 @@
 
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
-from models.slack_messages import SlackMessage, Attachment
-from models.scanner_data import Scanner, Signature
+from models.slack_messages import SlackMessage
+from models.scanner_data import Scanner, Signature, GroupID
 from typing import Union
 from aws_lambda_powertools import Logger
+from helpers import parse_attachement, create_unique_sig_name, parse_for_value_of
 
 logger = Logger()
 
-import re
+
 
 # WebClient instantiates a client that can call API methods
 # When using Bolt, you can use either `app.client` or the `client` passed to listeners.
@@ -19,6 +20,9 @@ def slack_client_factory(token):
 
 
 def get_channel(client, channel_name, conversation_id):
+    """
+    get_channel is used to find the channel ID name. Recomended only to use in local and then set channel id name as env variable or global.
+    """
 
     try:
         for result in client.conversations_list():
@@ -36,6 +40,10 @@ def get_channel(client, channel_name, conversation_id):
 
 
 def get_messages(conversation_id, client, start_timestamp, end_timestamp):
+    """
+    get_messages connects to slack itegration and pulls the messages from channel coversation history, using the start and end timestamps.
+    It will loop over paginated results automatically, and return a list of message jsons.
+    """
     try:
         result = client.conversations_history(channel=conversation_id, oldest=start_timestamp, latest=end_timestamp, inclusive=True)
 
@@ -60,11 +68,11 @@ def get_messages(conversation_id, client, start_timestamp, end_timestamp):
 
 
 def parse_message(message: Union[SlackMessage, dict], all_scanners, all_signatures, non_valid_sigs):
+    """
+    parse_message takes a single message (SlackMessage or dict) and parses it for all necessary information.
+    """
     if type(message) is dict:
         message = SlackMessage(**message)
-
-    total_new_scanners = 0
-    total_new_sigs = 0
 
     for attachment in message.attachments:
         sig_name, sig_id, created = parse_attachement(attachment.title)
@@ -74,7 +82,7 @@ def parse_message(message: Union[SlackMessage, dict], all_scanners, all_signatur
         if sig_name is None:
             continue
         else:
-            unique_sig_name = f"{sig_name} ({sig_id})"
+            unique_sig_name = create_unique_sig_name(sig_name, sig_id)
             timestamp = message.ts
 
             if unique_sig_name in non_valid_sigs:
@@ -84,29 +92,43 @@ def parse_message(message: Union[SlackMessage, dict], all_scanners, all_signatur
             type_id = parse_for_value_of("type_id", attachment.fallback)
             description = parse_for_value_of("description", attachment.fallback)
 
-            if created and group_id in [None, "1", 1]:
+            try:
+                group = GroupID(int(group_id))
+            except:
+                group = GroupID.UNKNOWN
+
+            if created and group in [GroupID.ORE]:
+                # immediately filter out all new sigs that are Ore and hence not valid.
+                logger.debug("Signature was an Ore on Creation - Ignoring", extra={"sig_name": sig_name, "sig_id": sig_id, "group_id": group_id, "type_id": type_id, "description": description})
                 non_valid_sigs.append(unique_sig_name)
                 continue
 
-            if group_id in ["1", 1]:
+            elif created and group in [GroupID.COMBAT]:
+                # Fitler out sigs that were just created and had a combat signature. 
+                logger.debug("Signature was an Combat Sig on Creation - Ignoring", extra={"sig_name": sig_name, "sig_id": sig_id, "group_id": group_id, "type_id": type_id, "description": description})
                 non_valid_sigs.append(unique_sig_name)
                 continue
-    
-            
+                
+            update_scanner(all_scanners, scanner_name)
+            update_signatures(all_scanners, all_signatures, sig_name, sig_id, scanner_name, unique_sig_name, timestamp, group_id, type_id, description)
 
                 
-            total_new_scanners += update_scanner(all_scanners, scanner_name, unique_sig_name,)
-            total_new_sigs += update_signatures(all_scanners, all_signatures, sig_name, sig_id, scanner_name, unique_sig_name, timestamp, group_id, type_id, description)
-            
-                
-    return total_new_scanners, total_new_sigs
+    return 
+
+
 
 def update_signatures(all_scanners, all_signatures, sig_name, sig_id, scanner_name, unique_sig_name, timestamp, group_id, type_id, description):
+    """
+    update_signatures will take the values extracted from a message and either create the signature if it does not exist or update an existing one with new values.
+
+    it will also update the scanner involved if it is a new signature, and if it is an existing signature it will update scanners if the message timestamp is earlier than
+    the currently recorded one.
+    """
     if unique_sig_name not in all_signatures.keys():
         sig = Signature(
-                signature_name=sig_name,
-                sig_id=sig_id,
-                first_update_timestamp=float(timestamp),
+                name=sig_name,
+                id=sig_id,
+                first_update_timestamp=timestamp,
                 original_scanner_name=scanner_name,
                 group_id=group_id,
                 type_id=type_id,
@@ -115,13 +137,12 @@ def update_signatures(all_scanners, all_signatures, sig_name, sig_id, scanner_na
         
 
         all_signatures[unique_sig_name] = sig
-        all_scanners[scanner_name].scanner_credits(unique_sig_name, add=True)
-
-        return 1
+        all_scanners[scanner_name].scanner_credits(sig, add=True)
+        
 
     else:
 
-        all_signatures[unique_sig_name] = update_sig_if_older(all_scanners, scanner_name, unique_sig_name, timestamp, all_signatures[unique_sig_name])
+        all_signatures[unique_sig_name] = update_sig_if_older(all_scanners, scanner_name, timestamp, all_signatures[unique_sig_name])
         if group_id is not None:
             all_signatures[unique_sig_name].group_id = group_id
         if type_id is not None:
@@ -129,85 +150,40 @@ def update_signatures(all_scanners, all_signatures, sig_name, sig_id, scanner_na
         if description is not None:
             all_signatures[unique_sig_name].description = description
         
-        return 0
+        sig = all_signatures[unique_sig_name]
+
+    logger.debug(f"{unique_sig_name} Updated", extra=sig.model_dump(mode="JSON"))
+    return sig
     
 
-def update_sig_if_older(all_scanners, scanner_name, unique_sig_name, timestamp, existing_sig):
-    timestamp = float(timestamp)
+def update_sig_if_older(all_scanners, scanner_name, timestamp, existing_sig):
+    """
+    update_sig_if_older checks to see if the signature that is already recorded as a scanner credit, if its timestamp is newer than the message being parsed.
+    if so, the scanner credit is updated.
+    """
     if timestamp < existing_sig.first_update_timestamp:
         original_scanner = existing_sig.original_scanner_name
         if original_scanner != scanner_name:
-            all_scanners[scanner_name].scanner_credits(unique_sig_name, add=True)
-            all_scanners[original_scanner].scanner_credits(unique_sig_name, add=False)
+            all_scanners[scanner_name].scanner_credits(existing_sig, add=True)
+            all_scanners[original_scanner].scanner_credits(existing_sig, add=False)
         existing_sig.first_update_timestamp = timestamp
     return existing_sig
 
-def update_scanner(all_scanners, scanner_name, unique_sig_name):
+def update_scanner(all_scanners, scanner_name):
     if scanner_name not in all_scanners.keys():
         scanner = Scanner(
                 name=scanner_name,
-                sigs_updated=[unique_sig_name],
-                total_sigs=0
+                sigs_updated=[],
+                total_sigs=0,
+                valid_sig_audit = [],
+                non_valid_sig_audit = []
             )
         all_scanners[scanner_name] = scanner
-        return 1
+        return
         
     else:
-        return 0
+        return
 
 
 
-            
-        
-
-
-
-def parse_attachement(title:str):
-
-    sig_name, sig_id, created = extract_signature_and_id(title)
-
-    if sig_name is None:
-        return None, None, False
-    
-    return sig_name, sig_id, created
-    
-
-def parse_for_value_of(value_name:str, log_text: str):
-    regex_dispatch = {
-        # info type : [regex pattern, exceptions to return None]
-        "group_id":  [r"groupId: (NULL|0) (➜|\\u279c) (\d)", [0, "0", 6, "6"] ],
-        "type_id": [r"typeId: (NULL|0) (➜|\\u279c) (\d)", [0, "0"]],
-        "description": [r"description: (NULL|0|\' \') (➜|\\u279c) '(.*)'", ["", " "]]
-    }
-    group_number = 3
-    # if value_name not in regex_dispatch return None
-
-
-    group_id_match = re.search(regex_dispatch[value_name][0], log_text)
-    logger.debug(f"Parse for {value_name}", extra={"step": "created", "parsed_values": group_id_match, value_name: log_text})
-    if group_id_match is None:
-        return None
-    elif group_id_match.group(group_number) in regex_dispatch[value_name][1]:
-        logger.debug(f"Parse for {value_name}", extra={"step": "ignored values", value_name: group_id_match.group(group_number)})    
-        return None
-    else:
-        return group_id_match.group(group_number)
-
-    
-
-def extract_signature_and_id(text):
-    signature_update_pattern = r"^Updated signature '(\w{3}-\d{3})' (#\d*)$"
-
-    match = re.search(signature_update_pattern, text)
-    create = False
-     
-    if match is None:
-        signature_create_pattern = r"^Created signature '(\w{3}-\d{3})' (#\d*)$"
-        match = re.search(signature_create_pattern, text)
-        create = True
-
-    if match is None:
-        return None, None, False
-    
-    return match.group(1), match.group(2), create
     

@@ -31,5 +31,22 @@ It pulls via weeks, from Monday 00:00 UTC to Sunday 23:59: UTC.
 
 - prod/v1/thisweek -> get the current week
 - prod/v1/lastweek -> get last week
-- prod/v1/-1 -> any negative number, get that many weeks ago
-- prod/v1/29 -> any positive number, get that week of this year. 
+- prod/v1/week/-1 -> any negative number, get that many weeks ago
+- prod/v1/week/29 -> any positive number, get that week of this year. 
+
+for any one of the above you can also include the total payout to scanners in as another path after, in millions of isk:
+
+so:
+
+- prod/v1/thisweek/512
+- prod/v1/lastweek/203432
+- prod/v1/week/29/12345
+
+
+There is an output that contains a string of in game urls - paste this into an eve mail and you will have a list of clickable links for delivering ISK to.
+
+If the total_payout is provided as part of the call, it will calculate the payout for each scanner based on their number of sigs automatically as part of that output, else it will just put a number of how many sigs they had for reference
+
+# Caveats
+
+Provided as is. No guarantee it will work (Did so just fine in local xD) Don't expect any support. Its a dirty hack. :)

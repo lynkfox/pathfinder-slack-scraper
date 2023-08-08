@@ -43,7 +43,7 @@ class MainStack(Stack):
 
         storage = StorageStack(self, "StorageStack", self.props)
 
-        functions = LambdaStack(self, "Lambdas", self.props, None)
+        functions = LambdaStack(self, "Lambdas", self.props, storage.cache_db)
 
         api = ApiStack(self, "Api", self.props, functions.lambda_mapping)
 

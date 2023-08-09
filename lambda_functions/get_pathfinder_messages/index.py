@@ -2,7 +2,7 @@ import os
 import json
 from slack_sdk.errors import SlackApiError
 from aws_lambda_powertools import Logger
-from slack_integration import slack_client_factory, get_messages, parse_message
+from slack_integration import slack_client_factory, get_messages, parse_message, not_signature_message
 from helpers import get_week_start_end_datetimes, convert_week_bookends_to_timestamps
 from models.lambda_event import ApiEvent, IncomingEvent
 from models.scanner_data import Scanner, scanner_eve_mail_link, scanner_payout
@@ -12,6 +12,7 @@ from common.attributes import DynamoAttributes, ScannerScrapeKeys
 import boto3
 from boto3.dynamodb.conditions import Key
 from decimal import Decimal
+from enum import Enum
 
 
 logger = Logger()
@@ -21,7 +22,6 @@ CONVERSATION_ID = "C05JHL0LBNC"
 TOKEN = os.getenv("SLACK_TOKEN", "Not Set yet")
 CACHE_TABLE = os.getenv("DYNAMO_CACHE", "Oops not set")
 CACHE_TTL = os.getenv("CACHE_TTL", 6)
-UPDATE_RESULTS_LAMBDA = os.getenv("UPDATE_RESULTS_LAMBDA", "uhoh")
 
 db_client = boto3.resource('dynamodb')
 
@@ -113,6 +113,11 @@ def lambda_handler(event: dict, context: dict) -> dict:
         }
 
 def retrieve_and_process_week(client, target_week, full_audit:bool=False):
+    '''
+    This is the primary function of the Lambda and contains the majority of the work that needs to be done when retrieving log information
+
+    This function is designed in a way that the only thing you should 
+    '''
 
     start_date, end_date = get_week_start_end_datetimes(week=target_week, year=None)
     logger.append_keys(start_date=start_date.isoformat(), end_date=end_date.isoformat())
@@ -120,7 +125,7 @@ def retrieve_and_process_week(client, target_week, full_audit:bool=False):
     start_timestamp, end_timestamp = convert_week_bookends_to_timestamps(start_date, end_date)
     logger.append_keys(start_timestamp=start_timestamp, end_timestamp=end_timestamp)
             
-    conversation_history = get_messages(CONVERSATION_ID, client, start_timestamp, end_timestamp)
+    conversation_history = get_messages(client, CONVERSATION_ID, start_timestamp, end_timestamp)
 
     logger.append_keys(message_count=len(conversation_history))
     logger.info("Messages retrieved from Slack Channel")
@@ -130,7 +135,7 @@ def retrieve_and_process_week(client, target_week, full_audit:bool=False):
     
 
     for message in conversation_history:
-        if message.get("type", "") != "message" or message.get("subtype", "") != "bot_message":
+        if not_signature_message(message):
             continue
         parse_message(message, all_scanners, all_sigs, non_valid_sigs )
 
@@ -142,6 +147,8 @@ def retrieve_and_process_week(client, target_week, full_audit:bool=False):
     logger.info("Non Valid sigs filtered")
 
     return build_response(start_date, end_date, all_scanners, full_audit)
+
+
 
 
 def value_per_sig(total_payout, total_sigs):
@@ -161,19 +168,39 @@ def build_response(start_date, end_date, all_scanners, full_audit):
     return status_code, body
 
 
+class PayoutType(Enum):
+    ISK = "000 isk"
+    SITES = " sites"
+
 def build_email_links(all_scanners:list, total_payout:int) -> str:
     
     is_isk_payout = float(total_payout) > 0
-    payout_type = "million isk" if is_isk_payout else "sites"
+    payout_type = PayoutType.ISK if is_isk_payout else PayoutType.SITES
+
+    fmt = " {new_line} {name} - {amount}{payout_type}"  if payout_type == PayoutType.ISK else '''{new_line}{amount}, {name}'''
+
+    output_values = []
 
     if type(all_scanners) is list and type(all_scanners[0]) is Scanner:
         per_sig = value_per_sig(total_payout, sum([scanner.total_sigs for scanner in all_scanners.values()]))
+        output_values = [build_individual_output_line(scanner.name, scanner.total_sigs, per_sig, payout_type) for scanner in all_scanners.values() if scanner.total_sigs > 0]
         
-        return  " <br> ".join([f"{scanner_eve_mail_link(scanner.name)} - {scanner_payout(per_sig, scanner.total_sigs)} {payout_type}" for scanner in all_scanners.values() if scanner.total_sigs > 0])
     elif type(all_scanners) is dict:
         per_sig = value_per_sig(total_payout, all_scanners[ScannerScrapeKeys.TOTAL_SIGS])
-        return  " <br> ".join([f"{scanner_eve_mail_link(name)} - {scanner_payout(per_sig, total)} {payout_type}" for name, total in all_scanners.items() if total > 0 and name != "TOTAL_SIGS"])
+        output_values = [build_individual_output_line(name, total, per_sig, payout_type) for name, total in all_scanners.items() if total > 0 and name != "TOTAL_SIGS"]
+        
+    return "".join([fmt.format(**output) for output in output_values])
 
+def build_individual_output_line(name, scanners_sig_count, per_sig, payout_type):
+    return {
+        "name": scanner_eve_mail_link(name),
+        "payout_type": payout_type.value,
+        "amount": scanner_payout(per_sig, scanners_sig_count),
+        "new_line": " <br> "  if payout_type == PayoutType.ISK else "\n"
+    }
+
+    
+ 
 def check_cache(table_name, week):
 
     week = build_pk(week)

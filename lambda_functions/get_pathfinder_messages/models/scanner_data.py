@@ -4,7 +4,6 @@ from typing import List, Optional, Union
 from datetime import datetime
 from enum import Enum
 from helpers import create_unique_sig_name
-from math import floor
 
 class GroupID(Enum):
     UNKNOWN = 0
@@ -89,6 +88,8 @@ class Signature(BaseModel):
         else:
             raise ValueError(f"Cannot compare Siganture to {type(other)}")
 
+
+
 def get_group(group_id):
     try:
         return GroupID(int(group_id)).name
@@ -107,4 +108,5 @@ def scanner_payout(per_sig:float, scanners_sigs:int) -> str:
     if per_sig <=0:
         return scanners_sigs
     
-    return "{:.3f}".format(float(per_sig) * int(scanners_sigs))
+    total_in_millions = "{:.0f}".format(float(per_sig) * int(scanners_sigs) * 1000)
+    return total_in_millions.replace(".", "").strip()

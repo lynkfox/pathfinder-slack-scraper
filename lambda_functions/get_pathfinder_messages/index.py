@@ -221,7 +221,7 @@ def check_cache(table_name, week):
     time_difference = datetime.now()-cache_updated
     logger.append_keys(cache_last_updated=cache_updated)
     # hours to seconds 
-    if time_difference.seconds >= CACHE_TTL*60*60 and week >= date.today().isocalendar().week: 
+    if time_difference.seconds >= CACHE_TTL*60*60 and int(week) >= date.today().isocalendar().week: 
         logger.info(f"Cache is older than {CACHE_TTL} hours, will calculate")
         return None
     
